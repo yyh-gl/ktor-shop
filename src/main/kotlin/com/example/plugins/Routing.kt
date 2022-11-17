@@ -1,6 +1,7 @@
 package com.example.plugins
 
 import com.example.contoroller.contents.*
+import com.example.infrastructure.dao.ContentRepositoryImpl
 import com.example.usecase.ListContentUseCase
 import io.ktor.server.routing.*
 import io.ktor.server.application.*
@@ -10,7 +11,8 @@ import io.ktor.server.response.*
 fun Application.configureRouting() {
     routing {
         get("/") {
-            val listContentUseCase = ListContentUseCase()
+            val contentRepository = ContentRepositoryImpl()
+            val listContentUseCase = ListContentUseCase(contentRepository)
             val contentController = ContentController(
                 listContentUseCase =  listContentUseCase
             )
