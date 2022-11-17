@@ -1,13 +1,40 @@
 package com.example.contoroller.contents
 
-data class Content(val id: Int, val name: String, val price: Int)
+import com.example.usecase.ListContentUseCase
+import com.example.domain.entity.Content
 
-class ContentController() {
-    fun list(): List<Content> {
-        return listOf(
-            Content(1, "赤ペン", 100),
-            Content(2, "青ペン", 200),
-            Content(3, "黄ペン", 300),
-        )
+data class ContentView(
+    val id: Int,
+    val name: String,
+    val price: Int
+) {
+    companion object {
+        fun of(content: Content): ContentView {
+            return ContentView(
+                id = content.id,
+                name = content.name,
+                price = content.price,
+            )
+        }
+    }
+}
+
+data class ContentsView(
+    val values: List<ContentView>,
+) {
+    companion object {
+        fun of(contents: List<Content>): ContentsView {
+            return ContentsView(
+                values = contents.map { ContentView.of(it) }
+            )
+        }
+    }
+}
+
+class ContentController(
+    private val listContentUseCase: ListContentUseCase
+) {
+    fun list(): ContentsView {
+        return ContentsView.of(listContentUseCase.execute())
     }
 }
