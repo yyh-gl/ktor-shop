@@ -1,13 +1,9 @@
 package com.example.contoroller.contents
 
-import com.example.usecase.ListContentUseCase
 import com.example.domain.entity.Content
+import com.example.usecase.ListContentUseCase
 
-data class ContentView(
-    val id: Int,
-    val name: String,
-    val price: Int
-) {
+data class ContentView(val id: String, val name: String, val price: Int) {
     companion object {
         fun of(content: Content): ContentView {
             return ContentView(
@@ -24,16 +20,12 @@ data class ContentsView(
 ) {
     companion object {
         fun of(contents: List<Content>): ContentsView {
-            return ContentsView(
-                values = contents.map { ContentView.of(it) }
-            )
+            return ContentsView(values = contents.map { ContentView.of(it) })
         }
     }
 }
 
-class ContentController(
-    private val listContentUseCase: ListContentUseCase
-) {
+class ContentController(private val listContentUseCase: ListContentUseCase) {
     fun list(): ContentsView {
         return ContentsView.of(listContentUseCase.execute())
     }
